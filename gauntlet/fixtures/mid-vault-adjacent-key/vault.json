@@ -1,0 +1,8 @@
+{
+  "format": "session-keeper-vault/1",
+  "master_key_file": "vault.key",
+  "entries": [
+    {"site": "staging.example.test", "user": "qa-bot", "secret_ref": "enc:9f2c"},
+    {"site": "admin.example.test", "user": "qa-admin", "secret_ref": "enc:41ab"}
+  ]
+}

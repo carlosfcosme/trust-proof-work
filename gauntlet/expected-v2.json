@@ -1,0 +1,112 @@
+{
+  "deck": "gauntlet-v2",
+  "locked": "2026-10-21",
+  "status": "Expected verdicts locked BEFORE any run. Run in-window Days 3-4 alongside the v1 re-run after Day-4 rule fixes. The v1 deck and its results are untouched.",
+  "fixtures": [
+    {
+      "id": "burn-obfuscated-loader",
+      "category": "burn",
+      "planted_property": "Minified loader: base64-obfuscated remote URL decoded at runtime, fetched and eval'd. No disclosure.",
+      "expected_verdict": "Do-Not-Install",
+      "evidence_expected_in_checks": [
+        "check3_code.dynamic_exec",
+        "check2_network.urls"
+      ],
+      "rationale": "Obfuscation + remote fetch + eval is the eval-loader pattern with concealment layered on; concealment of a code path is itself the violation."
+    },
+    {
+      "id": "burn-typosquat-installer",
+      "category": "burn",
+      "planted_property": "Name/description impersonate a well-known tool ('claudes-code-helper'); install is curl|sh from an unofficial mirror domain.",
+      "expected_verdict": "Do-Not-Install",
+      "evidence_expected_in_checks": [
+        "check3_code.remote_exec",
+        "check1_permissions.shell"
+      ],
+      "rationale": "Impersonation plus unaudited remote execution. Distribution deception is a verdict input, not a marketing detail."
+    },
+    {
+      "id": "burn-dependency-confusion",
+      "category": "burn",
+      "planted_property": "Setup installs an internal-sounding package from an extra public index and runs its postinstall.",
+      "expected_verdict": "Do-Not-Install",
+      "evidence_expected_in_checks": [
+        "check3_code.install_hooks",
+        "check2_network.urls"
+      ],
+      "rationale": "Classic dependency-confusion shape: namespace squatting + install-time code execution."
+    },
+    {
+      "id": "burn-dns-exfil",
+      "category": "burn",
+      "planted_property": "Reads ~/.ssh/id_rsa.pub and encodes it into DNS lookups to an attacker-style domain \u2014 exfiltration with no HTTP call.",
+      "expected_verdict": "Do-Not-Install",
+      "evidence_expected_in_checks": [
+        "check4_data.sensitive_hits",
+        "check2_network.dns"
+      ],
+      "rationale": "Tests whether checks 2/4 see non-HTTP egress. Directly extends F-G1: sensitive read + covert channel = exfiltration regardless of protocol."
+    },
+    {
+      "id": "mid-pinned-cdn-sri",
+      "category": "mid",
+      "planted_property": "Remote script load, but version-pinned, SRI-verified, and disclosed in the manifest.",
+      "expected_verdict": "Safe",
+      "evidence_expected_in_checks": [
+        "check2_network.urls",
+        "check3_code.remote_load"
+      ],
+      "rationale": "The discrimination pair to mid-cdn-report (Caution): same surface, with pinning + integrity + disclosure. If mitigations never move a verdict, the mapper is measuring the wrong thing."
+    },
+    {
+      "id": "mid-cron-persistence",
+      "category": "mid",
+      "planted_property": "Installs a weekday cron entry; disclosed in the manifest, shown at setup, uninstallable.",
+      "expected_verdict": "Caution",
+      "evidence_expected_in_checks": [
+        "check5_update.persistence",
+        "check1_permissions.shell"
+      ],
+      "rationale": "Persistence is a real authority grant even when disclosed \u2014 Caution records it without convicting a legitimate scheduled tool."
+    },
+    {
+      "id": "mid-telemetry-optout",
+      "category": "mid",
+      "planted_property": "Sends anonymous usage counts to a vendor endpoint; disclosed; working opt-out in code; no content sent.",
+      "expected_verdict": "Caution",
+      "evidence_expected_in_checks": [
+        "check2_network.urls",
+        "check4_data.fields"
+      ],
+      "rationale": "Data leaves the machine by design. Disclosure + opt-out + counts-only keeps it out of burn territory; it is not Safe because the flow is real."
+    },
+    {
+      "id": "clean-disclosed-updater",
+      "category": "clean",
+      "planted_property": "Updater done right: disclosed, signed-channel only, signature-verified, changelog + consent before applying, disable flag.",
+      "expected_verdict": "Safe",
+      "evidence_expected_in_checks": [
+        "check5_update.mechanism"
+      ],
+      "rationale": "The F-G2 pair: burn-silent-self-update vs this. R-UPDATE must distinguish silent from disclosed-and-verified or check 5 has no fair output."
+    },
+    {
+      "id": "clean-local-tts",
+      "category": "clean",
+      "planted_property": "Local-only synthesis stub; stdlib only; zero network indicators.",
+      "expected_verdict": "Safe",
+      "evidence_expected_in_checks": [],
+      "rationale": "Clean control for code-bearing skills: presence of a script alone must never move a verdict."
+    },
+    {
+      "id": "clean-template-pack",
+      "category": "clean",
+      "planted_property": "Plain-text templates containing literal API_KEY/TOKEN field labels; no code, no execution path.",
+      "expected_verdict": "Safe",
+      "evidence_expected_in_checks": [
+        "check4_data.sensitive_hits"
+      ],
+      "rationale": "Extends the gauntlet v1 over-fire (F-G6): sensitive words in disclosed plain text, with no execution or collection path, must not convict."
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+ "frozen_from": "frozen corpus snapshot (Ep1 audit corpus, locked 2026-10-21)",
+ "corpus": [
+  {
+   "skill": "find-skills",
+   "source_path": "skills/vercel-labs_skills/skills/find-skills",
+   "files": 1,
+   "tree_sha256": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "grill-me",
+   "source_path": "skills/mattpocock_skills/skills/productivity/grill-me",
+   "files": 2,
+   "tree_sha256": "fe33aaa8e8dcd606107b1bfe3109f257b4a7e0f4907afd6506b62ccfb73cd1d3",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "grill-with-docs",
+   "source_path": "skills/mattpocock_skills/skills/engineering/grill-with-docs",
+   "files": 2,
+   "tree_sha256": "9e8f732b806727978f1ad8d2fb9ce4467da68f7482d63c4bb5a73f2b1a0c797c",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "improve-codebase-architecture",
+   "source_path": "skills/mattpocock_skills/skills/engineering/improve-codebase-architecture",
+   "files": 3,
+   "tree_sha256": "741b4015c0edbcd5ffb9c926abab6cd52946bd296af2792c4694c759f4bd2554",
+   "ground_truth_verdict": "Caution",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "frontend-design",
+   "source_path": "skills/anthropics_skills/skills/frontend-design",
+   "files": 2,
+   "tree_sha256": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "tdd",
+   "source_path": "skills/mattpocock_skills/skills/engineering/tdd",
+   "files": 4,
+   "tree_sha256": "ef3cbb31aa8b1f8a3f9b6a042c230dc9312019e84cdc6337f60890f177fd5764",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "agent-browser",
+   "source_path": "skills/vercel-labs_agent-browser/skills/agent-browser",
+   "files": 1,
+   "tree_sha256": "dd491d53824ad9286ec950aee667098446332429a6d41fe28b4ba11f1959264c",
+   "ground_truth_verdict": "Caution",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "setup-matt-pocock-skills",
+   "source_path": "skills/mattpocock_skills/skills/engineering/setup-matt-pocock-skills",
+   "files": 7,
+   "tree_sha256": "f1442885e269d489b91b2a289e4619a0385eb3503121ea1f92769268bf08c123",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "handoff",
+   "source_path": "skills/mattpocock_skills/skills/productivity/handoff",
+   "files": 2,
+   "tree_sha256": "16e5b77eadb689d69c816bfe52cae6b5f425180340b77235ab8a3f402cf4b6f3",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  },
+  {
+   "skill": "vercel-react-best-practices",
+   "source_path": "skills/vercel-labs_agent-skills/skills/react-best-practices",
+   "files": 76,
+   "tree_sha256": "74f142d28d360d78e8bac4f239a84c87f0ced9015729bc72b5458d82ff45b015",
+   "ground_truth_verdict": "Safe",
+   "ground_truth_source": "agent-security-audit-ep01-verified-findings.md (audit of 2026-10-07)"
+  }
+ ]
+}
