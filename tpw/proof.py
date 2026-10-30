@@ -1,7 +1,7 @@
 """Proof layer: audit a skill package and issue its verdict credential.
 
 Pipeline: frozen rig scan -> baseline verdict (rig verdicts.py) ->
-Day-4 rule fixes (tpw.rulefixes) -> final verdict -> interrogator
+Rule-fix layer (tpw.rulefixes) -> final verdict -> interrogator
 citation validation (rig interrogator.py: every claim's citation must
 resolve to a real file+line with matching text) -> credential issuance
 (tpw.creds refuses citation-less findings at issuance).

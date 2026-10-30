@@ -8,7 +8,7 @@ the gate fails; nothing downstream may proceed on a failed gate.
 Part B - gauntlet v1 baseline: frozen rig only, against the locked
 expected verdicts (the 2026-10-21 run recorded 13/20 exact, 3/6 burns).
 
-Part C - gauntlet v1 with the Day-4 rule fixes (tpw.proof.final_verdict).
+Part C - gauntlet v1 with the rule-fix layer (tpw.proof.final_verdict).
 
 Part D - gauntlet v2 deck with the fixes (informational; verdicts locked
 2026-10-21 before any run).

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""GAUNTLET RUNNER — measure the frozen Ep1 audit/verdict machinery against
+"""GAUNTLET RUNNER — measure the frozen audit/verdict machinery against
 pre-registered methodology verdicts on 20 synthetic fixture skills.
 
 Machinery under test (READ-ONLY — imported, never modified):
   rig/evidence.py (vendored at the repository root)
       scan_skill() -> runs the frozen scanner audit_skill.py (sha256-locked
-      copy of the 2026-10-07 Ep1 harness) over a skill directory.
+      copy of the 2026-10-07 audit harness) over a skill directory.
   rig/verdicts.py (vendored at the repository root)
       verdict_for() -> the deterministic verdict mapper (rules DNI-B64,
       DNI-RTD, DNI-EVAL, R-CDN, R-BASH).

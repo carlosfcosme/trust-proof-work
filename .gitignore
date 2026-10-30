@@ -5,3 +5,6 @@ out/
 # Python caches
 __pycache__/
 *.pyc
+
+# Local review record - never published (quotes its own scrub patterns)
+MANIFEST.md

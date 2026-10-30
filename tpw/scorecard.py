@@ -35,7 +35,7 @@ def render(agent_view: dict, audits: list[dict], credentials: list[dict],
         g = (f"<h2>Audit benchmark (gauntlet, 20 fixtures)</h2>"
              f"<p>Baseline frozen machinery: {gauntlet['baseline_exact']}/20 "
              f"exact, burns caught {gauntlet['baseline_burns']}/6. "
-             f"With the Day-4 rule fixes: {gauntlet['after_exact']}/20 exact, "
+             f"With the rule-fix layer: {gauntlet['after_exact']}/20 exact, "
              f"burns caught {gauntlet['after_burns']}/6, clean false "
              f"positives {gauntlet['after_clean_fp']}/8.</p>")
     return f"""<!DOCTYPE html>

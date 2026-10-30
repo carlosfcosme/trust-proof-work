@@ -1,4 +1,4 @@
-"""Day-4 rule fixes, layered OVER the frozen rig (the rig is never edited).
+"""The rule-fix layer, layered OVER the frozen rig (the rig is never edited).
 
 Implements the gauntlet findings F-G1..F-G6 from gauntlet/RESULTS.md:
   R-EXFIL      (F-G1) script reads credential-class paths AND calls an

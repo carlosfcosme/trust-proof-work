@@ -16,7 +16,7 @@ python3 demo.py                    # the full 7-beat demo (writes out/scorecard.
 |---|---|
 | Golden corpus — 10 real skills, locked ground truth | **8 Safe / 2 Caution / 0 Do-Not-Install — exact match, gate PASS** |
 | Gauntlet v1 — frozen baseline machinery (20 fixtures, verdicts locked 2026-10-21) | 13/20 exact, burns caught 3/6 |
-| Gauntlet v1 — with the Day-4 rule-fix layer | **20/20 exact, burns 6/6, clean false positives 0/8** |
+| Gauntlet v1 — with the rule-fix layer | **20/20 exact, burns 6/6, clean false positives 0/8** |
 | Gauntlet v2 — with the rule-fix layer (10 fixtures, locked 2026-10-21) | **10/10 exact** |
 | Escrow invariants I1–I6 | **7/7 test groups pass** |
 | Demo | 14/14 checks, 9 renditions QC-pass, settlement only on verified delivery |
@@ -33,7 +33,7 @@ on an NVIDIA DGX Spark.
 active; Moltbook early access pending), DID documents, controller-linkage
 credentials, T0–T5 authority tiers.
 **Proof** — a deterministic 5-check skill audit. The scanner and baseline
-verdict mapper are the frozen Ep1 machinery, vendored byte-identical in
+verdict mapper are the frozen audit machinery, vendored byte-identical in
 `rig/` (audit_skill.py sha256 d5c687d9003f…). Verdicts are issued as
 credentials; every finding must carry a file+line citation, enforced
 mechanically by the interrogator contract and again at issuance.
@@ -56,7 +56,7 @@ python3 demo.py                # the 7-beat demo (writes out/scorecard.html, out
   0 Do-Not-Install, exact match — PASS**
 - Gauntlet v1 (20 synthetic fixtures, verdicts locked 2026-10-21):
   baseline frozen machinery **13/20 exact, burns 3/6** (identical to the
-  2026-10-21 record) → with the Day-4 rule fixes **20/20 exact, burns 6/6,
+  2026-10-21 record) → with the rule-fix layer **20/20 exact, burns 6/6,
   clean false positives 0/8**
 - Gauntlet v2 (10 fixtures, locked 2026-10-21): **10/10 exact** with fixes
 - Invariants I1–I6: **all pass**
@@ -83,9 +83,21 @@ python3 demo.py                # the 7-beat demo (writes out/scorecard.html, out
   state directory — demo-grade signatures, production-shaped
   verification (canonical JSON, expiry, single-use nonces).
 - **Renditions** in the demo job are rendered locally by ffmpeg as
-  language/aspect title cards; in the full product the Hunter pipeline
+  language/aspect title cards; in the full product the production pipeline
   produces them and Muse Image makes the covers. The delivery-credential
   contract is the same either way, and the demo transcript states which
   path produced a run's files.
-- The frozen rig in `rig/` is never modified. All Day-4 fixes live in
+- The frozen rig in `rig/` is never modified. All rule fixes live in
   `tpw/rulefixes.py` as a layer over its scan output.
+
+## Terminology note
+
+Two labels inside the frozen artifacts predate this repository's public
+terminology: "Ep1" (the audit harness's original development label) and
+"Day-4" (the sprint day the rule-fix layer was designed). They appear
+only inside files that are preserved verbatim as evidence — the frozen
+rig in `rig/` and the locked gauntlet records in `gauntlet/` (fixtures,
+expected verdicts, and `RESULTS.md`) —
+because those files are hash-verified exactly as they stand. Everywhere
+this project speaks in its own voice, they read as "the audit machinery"
+and "the rule-fix layer."
